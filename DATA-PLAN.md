@@ -1,0 +1,18 @@
+# Data Plan
+
+The artifact is read-only and uses exact user-owned study records from two workspace documents, the user's later correction of the bank totals, and the user's public Hari 01 reflection repository:
+
+- `~/workspace/your_files/TKA/rekapan-kemampuan.md` for mastered topics, gaps, the scored Fisika Day 9 / Matematika Lanjutan Day 1 results, and the 11 Oct review of `Okt_10.pdf` confirming that the projectile kinetic-energy and trigonometric-limit corrections are now mastered.
+- `~/workspace/your_files/TKA/rencana-15-hari-bank-soal.md` for the original 15-day LOTS/MOTS/HOTS allocation.
+- The corrected, user-confirmed bank is **677 questions**: Fisika **221**, Matematika Wajib **250**, and Matematika Lanjutan **206**. Its difficulty composition is LOTS **204**, MOTS **320**, and HOTS **153**. The prior 674 total omitted three verified MOTS questions.
+- `https://github.com/agentpixelated/tka-refleksi` for the Hari 01 reflection index at public commit `6b9e984fa3910d2143ad69e36582cb28f191cef4`: 18 note files for unanswered questions and 11 MP4 files for wrong answers. The exact user-owned Markdown and MP4 bytes from the matching local repository copy are owned by the artifact. Each note is emitted as its own lazily imported chunk, and the video player points only to the selected MP4 with metadata preloading, so one selected note or video can be read or played directly without mounting or requesting all 29 bodies at once. The original GitHub-rendered note URLs and `https://raw.githubusercontent.com/agentpixelated/tka-refleksi/main/videos/` video URLs remain available as provenance links.
+
+The three restored MOTS questions are explicitly allocated in the 15-day path: one Fisika question on Day 01, one Matematika Wajib question on Day 02, and one Matematika Lanjutan question on Day 15. This makes every axis reconcile to 677: all daily totals, all subject totals, and all difficulty totals.
+
+Per the user's naming correction, every assessment completed before the 15-day run is grouped under program **Hari 00**. The authoritative plan is the website allocation: **Hari 01 has 46 questions** (18 Fisika, 17 Matematika Wajib, 11 Matematika Lanjutan), and Hari 01 begins on 11 Oct 2026. Initial assessment scores remain historical; the two later-corrected topics are marked mastered without rewriting those scores. Daily average accuracy is the arithmetic mean of the subject accuracies present on that program day; missing subjects and empty days are not treated as zero, and chart lines do not bridge missing days. No external source is fetched at runtime and no synthetic performance history is created.
+
+## Daily result structure
+
+Hari 01 and Hari 02 use the same `firstTryDays[]` record shape: day/label/date, assigned/attempted/unanswered/correct, total accuracy, arithmetic mean of subject accuracies, an optional timer and optional LOTS/MOTS/HOTS breakdown, then one row per subject with assigned/attempted/correct/accuracy and an optional reflected-correct count. Hari 01 keeps its historical attempted-question denominator and reflected results; Hari 02 uses the assigned-question denominator and adds timer plus difficulty results.
+
+Hari 03 follows that same shape with the exact first-try record supplied on 13 Oct 2026: total 16/46 (35%), 25 attempted, 21 unanswered, and subject results Fisika 6/18 (33%), Matwa 8/17 (47%), Matlan 2/11 (18%), giving a 33% arithmetic mean across subjects. Its 19 Markdown notes, 19 matching visualization PNGs, and 11 Manim MP4s come from the user's local `~/workspace/tka-refleksi/` repository copy and are owned as artifact assets; two geometry videos are marked as unanswered-study materials rather than wrong-answer materials.
