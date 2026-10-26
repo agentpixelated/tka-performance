@@ -7,12 +7,12 @@
     "typecheck": "bun x tsc --noEmit -p client/tsconfig.json && bun x tsc --noEmit -p server/tsconfig.json",
     "build": "bun run build:server && bun run build:client",
     "build:server": "cd server && bun build ./src/actions.ts --target=bun --outfile=./dist/actions.js",
-    "build:client": "bun ./client/build.mjs"
+    "build:client": "bun ./client/build.mjs",
+    "build:static": "bun ./client/build-static.mjs"
   },
   "dependencies": {
     "@fontsource-variable/bricolage-grotesque": "^5.3.0",
     "@fontsource-variable/manrope": "^5.3.0",
-    "@hatch/space-sdk": "file:/opt/hatch/skills/spaces/ts-runtime/dist/space-sdk.tgz",
     "@tanstack/react-query": "5.100.10",
     "drizzle-orm": "0.45.2",
     "katex": "^0.16.11",

@@ -1,6 +1,6 @@
 import { useMemo, useState, type CSSProperties } from "react";
-import { useQuery } from "@tanstack/react-query";
-import { SafeAreaTopScrim } from "@hatch/space-sdk/client";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { SafeAreaTopScrim } from "./SafeAreaTopScrim";
 import {
 CartesianGrid,
 Line,
@@ -14,9 +14,10 @@ import BlurText from "./components/BlurText";
 import Counter from "./components/Counter";
 import Threads from "./components/Threads";
 import { ReflectionViewer } from "./components/ReflectionViewer";
-import { api, type ApiResponse } from "./api";
+import { api } from "./api";
+import { DataEditor } from "./DataEditor";
+import type { Dashboard } from "./localStore";
 
-type Dashboard = ApiResponse<typeof api, "getDashboard">;
 type Assessment = Dashboard["assessments"][number];
 type Question = Assessment["questions"][number];
 type FirstTryDay = Dashboard["firstTryDays"][number];
@@ -338,10 +339,12 @@ function AssessmentDetail({ assessment }: { assessment: Assessment }) {
 export function App() {
   const [selectedFirstTryDay, setSelectedFirstTryDay] = useState(3);
   const [selectedReflectionDay, setSelectedReflectionDay] = useState(3);
+  const queryClient = useQueryClient();
   const dashboardQuery = useQuery({
     queryKey: ["tka-dashboard"],
     queryFn: () => api.getDashboard({}),
   });
+  const refreshDashboard = () => void queryClient.invalidateQueries({ queryKey: ["tka-dashboard"] });
 
   const computed = useMemo(() => {
     const data = dashboardQuery.data;
@@ -533,6 +536,7 @@ export function App() {
               <a href="#hasil">Hasil</a>
               <a href="#refleksi">Refleksi</a>
               <a href="#topik">Topik</a>
+              <a href="#isi-data">Isi data</a>
             </nav>
 
             <section className="hero-field" aria-labelledby="hero-title">
@@ -586,6 +590,8 @@ export function App() {
                 <Metric value={computed.latestDay?.unanswered ?? 0} label="tidak dikerjakan" />
               </div>
             </section>
+
+            <DataEditor dashboard={dashboardQuery.data} onSaved={refreshDashboard} />
 
             <section className="journey-section" id="lintasan" aria-labelledby="journey-title">
               <SectionIntro

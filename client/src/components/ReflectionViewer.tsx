@@ -17,6 +17,10 @@ type ReflectionRecord = {
   focus: string;
   href: string;
   duration?: string;
+  // Diisi hanya oleh formulir isi data (lihat DataEditor.tsx). Baris template
+  // tidak punya field ini dan tetap dirender dari loader/berkas lama.
+  noteText?: string;
+  imageUrl?: string;
 };
 
 const subjectShort: Record<Subject, string> = {
@@ -390,10 +394,15 @@ export function ReflectionViewer({
   }
 
   const activeKey = `${active.day}-${active.number}`;
-  const note = active.type === "note" && noteState?.key === activeKey ? noteState.content : undefined;
+  const customNote = active.type === "note" ? active.noteText : undefined;
+  const note = customNote ?? (active.type === "note" && noteState?.key === activeKey ? noteState.content : undefined);
   const noteFailed = active.type === "note" && noteState?.key === activeKey && noteState.error;
   const noteImage = active.type === "note" ? reflectionImages[activeKey] : undefined;
-  const video = active.type === "video" ? reflectionVideos[activeKey] : undefined;
+  // Video template dari berkas MP4 lokal; video yang ditambahkan lewat formulir
+  // memakai tautan MP4 langsungnya (href) bila tidak ada berkas lokal.
+  const video = active.type === "video"
+    ? (reflectionVideos[activeKey] ?? (active.href.endsWith(".mp4") ? active.href : undefined))
+    : undefined;
 
   return (
     <div className="reflection-browser">
@@ -454,7 +463,11 @@ export function ReflectionViewer({
           {active.type === "note" ? (
             note ? (
               <div className="reflection-note-scroll">
-                {noteImage ? (
+                {active.imageUrl ? (
+                  <figure className="reflection-visual">
+                    <img src={active.imageUrl} alt={`Diagram refleksi soal ${active.number}`} />
+                  </figure>
+                ) : noteImage ? (
                   <figure className="reflection-visual">
                     <img src={noteImage.src} alt={noteImage.alt} />
                   </figure>

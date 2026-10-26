@@ -1,20 +1,12 @@
-// Typed RPC client. Types come straight from `server/src/actions.ts` — no
-// codegen. `createActionClient` returns a proxy that POSTs `{action, args}`
-// to `./actions` and returns the typed response.
-//
-// `import type { Actions }` is type-only by design: the client bundle never
-// pulls in any server runtime (bun:sqlite, file APIs, etc.). With
-// `verbatimModuleSyntax: true`, dropping `type` is a compile error.
+// Klien data versi bisa-diisi: dulu api.getDashboard() memanggil RPC server
+// Muse lewat @hatch/space-sdk/client (server/src/actions.ts, bun:sqlite).
+// Sekarang ia membaca store lokal browser (localStore.ts). Bentuk responsnya
+// sama persis (Dashboard), jadi App.tsx tidak perlu diubah kecuali impor
+// SafeAreaTopScrim dan penambahan editor — lihat DataEditor.tsx.
+import { loadDashboard, type Dashboard } from "./localStore";
 
-import type { Actions } from "../../server/src/actions";
-import { createActionClient } from "@hatch/space-sdk/client";
+export const api = {
+  getDashboard: async (_args: Record<string, never>): Promise<Dashboard> => loadDashboard(),
+};
 
-export const api = createActionClient<typeof Actions>();
-
-// Re-exported for convenience so client code can do
-//
-//     import { api, type ApiResponse } from "./api";
-//     type Article = ApiResponse<typeof api, "listArticles">["articles"][number];
-//
-// They are also available directly from "@hatch/space-sdk/client".
-export type { ApiRequest, ApiResponse } from "@hatch/space-sdk/client";
+export type { Dashboard };
